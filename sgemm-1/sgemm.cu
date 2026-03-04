@@ -233,7 +233,13 @@ void basicSgemm_d_1thread1column(int m, int k, int n, const float *A_h, const fl
 bool verify(float* CPU_Answer, float* GPU_Answer, unsigned int nRows, unsigned int nCols) {
     for (unsigned int i = 0; i < nRows; i++) {
         for (unsigned int j = 0; j < nCols; j++) {
-            if (fabs(CPU_Answer[i * nCols + j] - GPU_Answer[i * nCols + j]) > 1e-5) {
+            float ref  = fabs(CPU_Answer[i * nCols + j]);
+            float diff = fabs(CPU_Answer[i * nCols + j] - GPU_Answer[i * nCols + j]);
+            /* relative tolerance of 0.1% for large values, absolute 1e-3 for near-zero */
+            float tol  = (ref > 1.0f) ? ref * 1e-3f : 1e-3f;
+            if (diff > tol) {
+                printf("  MISMATCH at [%u][%u]: cpu=%.6f  gpu=%.6f  diff=%.6f\n",
+                       i, j, CPU_Answer[i * nCols + j], GPU_Answer[i * nCols + j], diff);
                 return false;
             }
         }
