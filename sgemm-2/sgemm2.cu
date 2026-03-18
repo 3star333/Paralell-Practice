@@ -182,9 +182,13 @@ void basicSgemm_d_tiled(int m, int k, int n, const float *A_h, const float *B_h,
     /*
      * Largest tileSize s.t. two tiles (As + Bs) fit in shared memory:
      *   2 * tileSize^2 * sizeof(float) <= maxShared
+     * Also capped by max threads per block: tileSize^2 <= maxThreadsPerBlock
      * Round down to nearest multiple of 16 for warp alignment.
      */
+    int maxThreadsPerBlock = prop.maxThreadsPerBlock;  /* typically 1024 */
     int tileSize = (int)sqrtf((float)(maxShared / (2 * sizeof(float))));
+    int tileByThreads = (int)sqrtf((float)maxThreadsPerBlock);
+    if (tileSize > tileByThreads) tileSize = tileByThreads;
     tileSize = (tileSize / 16) * 16;
     if (tileSize < 16) tileSize = 16;  /* safety floor */
 
