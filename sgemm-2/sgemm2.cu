@@ -1,3 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <time.h>
+#include <cuda.h>
+#include <cuda_runtime.h>
+
 #define CHECK(call) { \
     const cudaError_t error = call; \
     if (error != cudaSuccess) { \
@@ -6,12 +13,6 @@
         exit(error); \
     } \
 }
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <time.h>
-#include <cuda.h>
 
 /* ────────────────────────────────────────────────────────────
  * myCPUTimer – POSIX monotonic wall-clock timer.
