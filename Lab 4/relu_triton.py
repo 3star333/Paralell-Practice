@@ -82,7 +82,7 @@ def check_correctness():
         line_arg = 'provider',
         line_vals= ['triton', 'torch'],
         line_names=['Triton ReLU', 'Torch ReLU'],
-        styles   = [('royalblue', '-o'), ('tomato', '-s')],
+        styles   = [('royalblue', '-'), ('tomato', '--')],
         ylabel   = 'Bandwidth (GB/s)',
         plot_name= 'ReLU Performance: Triton vs Torch',
         args     = {},
