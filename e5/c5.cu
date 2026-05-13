@@ -182,7 +182,7 @@ int main(int argc, char *argv[]) {
         &one,
         d_C_col, m,                 // src C(m×n) col-major, lda = m
         &zero,
-        d_C_col, m,                 // unused second operand (β=0)
+        d_C,    n,                  // B unused (β=0); must still be valid n×m, ldb = n
         d_C,    n));                // dst Cᵀ(n×m) col-major ≡ C(m×n) row-major, ldc = n
 
     CUDA_CHECK(cudaStreamSynchronize(stream));
